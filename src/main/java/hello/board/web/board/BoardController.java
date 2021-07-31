@@ -40,12 +40,12 @@ public class BoardController {
     private final CommentService commentService;
     private final FileStore fileStore;
 
-    @GetMapping("/board")
+    @GetMapping("board")
     public String board() {
         return "mainForm";
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String boardLogin(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
 
@@ -57,7 +57,7 @@ public class BoardController {
     }
 
     // 게시글 작성 폼
-    @GetMapping("/board/newPost")
+    @GetMapping("board/newPost")
     public String newPost(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -68,7 +68,7 @@ public class BoardController {
     }
 
     // 게시글 작성
-    @PostMapping("/board/newPost")
+    @PostMapping("board/newPost")
     public String post(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                        @ModelAttribute BoardForm form) throws IOException {
 
@@ -86,7 +86,7 @@ public class BoardController {
     }
 
     //게시글 조회
-    @GetMapping("/board/{postId}/postView")
+    @GetMapping("board/{postId}/postView")
     public String postView(@PathVariable("postId") Long postId,
                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                            Model model) {
@@ -110,7 +110,7 @@ public class BoardController {
     }
 
     // 게시글 수정 폼
-    @GetMapping("/board/{postId}/updatePost")
+    @GetMapping("board/{postId}/updatePost")
     public String updatePost(@PathVariable("postId") Long postId, Model model) {
         Board findPost = boardService.findOne(postId);
 
@@ -120,7 +120,7 @@ public class BoardController {
     }
 
     // 게시글 수정
-    @PostMapping("/board/{postId}/updatePost")
+    @PostMapping("board/{postId}/updatePost")
     public String updatePostComp(@PathVariable("postId") Long postId, @ModelAttribute BoardForm form) {
 
         boardService.updatePost(postId, form.getPostContent());
@@ -129,7 +129,7 @@ public class BoardController {
     }
 
     // 게시글 삭제
-    @GetMapping("/board/{postId}/deletePost")
+    @GetMapping("board/{postId}/deletePost")
     public String deletePost(@PathVariable("postId") Long postId) {
 
         boardService.deletePost(postId);
@@ -138,7 +138,7 @@ public class BoardController {
     }
 
     //  첨부파일 다운로드
-    @GetMapping("/attach/{postId}")
+    @GetMapping("attach/{postId}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable Long postId,
                                                     @RequestParam String storeFileName) throws MalformedURLException {
 

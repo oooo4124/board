@@ -25,12 +25,12 @@ public class LoginController {
     private final LoginService loginService;
     private final SessionManager sessionManager;
 
-    @GetMapping("/login")
+    @GetMapping("login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
         return "login/loginForm";
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
@@ -55,7 +55,7 @@ public class LoginController {
         return "redirect:" + redirectURL;
     }
 
-    @GetMapping("/logout")
+    @GetMapping("logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {

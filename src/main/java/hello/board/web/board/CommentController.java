@@ -26,7 +26,7 @@ public class CommentController {
     private final BoardService boardService;
 
     // 댓글 작성
-    @PostMapping("/board/{postId}/comment")
+    @PostMapping("board/{postId}/comment")
     public String commentWrite(@PathVariable("postId") Long postId,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                                CommentForm form,

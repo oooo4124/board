@@ -15,18 +15,18 @@ import java.util.Optional;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("members")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/join")
+    @GetMapping("join")
     public String addForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());
         return "members/addMemberForm";
     }
 
-    @PostMapping("/join")
+    @PostMapping("join")
     public String save(@Valid @ModelAttribute MemberForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "members/addMemberForm";
