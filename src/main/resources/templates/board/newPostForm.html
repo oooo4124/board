@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    textarea {
+        resize: none;
+        height: 430px;
+    }
+</style>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container">
+    <div class="py-5">
+    <form th:action="@{/board/newPost}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <div class="row">
+        <div>
+            <label>제목</label>
+            <input class="form-control" type="text" th:field="*{postTitle}">
+        </div>
+        <div>
+            <label>내용</label>
+            <textarea class="form-control" aria-disabled="true" th:field="*{postContent}"></textarea>
+            <p class="py-1">첨부파일</p>
+            <input class="form-control" type="file" multiple="multiple" th:field="*{multipartFiles}">
+        </div>
+        </div>
+        <div class="my-3 col-sm-12 justify-content-end d-flex">
+            <button class="btn btn-sm btn-outline-secondary me-md-2" type="submit">작성</button>
+            <a class="btn btn-sm btn-outline-secondary me-md-2" th:href="@{/}">목록으로</a>
+        </div>
+    </form>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

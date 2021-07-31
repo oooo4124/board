@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>게시판</title>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class=" container">
+  <form action="" th:action th:object="${loginForm}" method="post">
+    <h1 class="text-center py-5">로그인</h1>
+    <div th:if="${#fields.hasGlobalErrors()}">
+      <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+         th:text="${err}">전체 오류 메시지</p>
+    </div>
+    <div class="text-left py-5">
+      <label class="py-2">ID</label>
+      <input type="text" class="py-2 form-control" th:field="*{loginId}" placeholder="아이디를 입력하세요">
+      <div class="field-error" th:errors="*{loginId}" />
+      <label class="py-2">Password</label>
+      <input type="password" class="py-2 form-control" th:field="*{password}" placeholder="Password">
+      <div class="field-error" th:errors="*{password}" />
+    </div>
+<div class="row py-5">
+    <button class="col btn btn-lg btn-secondary me-md-2" type="submit">로그인</button>
+    <a class="col btn btn-lg btn-secondary me-md-2" th:href="@{/}">돌아가기</a>
+</div>
+  </form>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body><whale-quicksearch translate="no"></whale-quicksearch></html>

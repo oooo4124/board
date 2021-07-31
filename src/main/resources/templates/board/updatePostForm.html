@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>게시글</title>
+</head>
+<style>
+    .ContentBox {
+        padding: 29px 29px 0;
+        border: 0 darkgray solid;
+        border-radius: 6px;
+    }
+
+    textarea {
+        resize: none;
+        height: 430px;
+        border: none;
+        background: white;
+    }
+</style>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container ContentBox">
+    <div>
+        <div>
+            <h1 th:text="${findPost.getPostTitle()}">글제목</h1>
+            <h6 th:text="${findPost.getMember().name}">작성자</h6>
+        </div>
+        <div class="row">
+            <span class="col" th:text="${findPost.getPostDate()}">작성일</span>
+            <span class="col-1">조회수<span th:text="${findPost.getViewCount()}">조회수</span></span>
+        </div>
+        <hr class="my-3">
+
+        <div>
+            <form th:action="@{/board/{postId}/updatePost (postId=${findPost.id})}" th:object="${form}" method="post">
+            <textarea class="form-control bg-white" aria-disabled="true" id="postContent" name="postContent" th:text="${findPost.getPostContent()}">
+
+            </textarea>
+        </div>
+
+        <div class="my-3 col-sm-12 justify-content-end d-flex">
+            <button type="submit" class="btn btn-sm btn-outline-secondary me-md-2" >완료</button>
+            <a class="btn btn-sm btn-outline-secondary me-md-2" th:href="@{/board/{postId}/deletePost (postId=${findPost.id})}">삭제</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/board/{postId}/postView (postId=${findPost.id})}">취소</a>
+        </div>
+        </form>
+
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

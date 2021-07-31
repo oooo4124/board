@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="bodyHeader" class="container-fluid blog-header py-3 bg-light fiexd-top">
+  <div class="d-flex justify-content-end align-items-center">
+    <a class="btn btn-sm btn-secondary me-md-2" th:if="${session.loginMember == null}" th:onclick="|location.href='@{/login}'|">로그인</a>
+    <a class="btn btn-sm btn-secondary me-md-2" th:if="${session.loginMember == null}" th:onclick="|location.href='@{/members/join}'|">회원가입</a>
+    <a class="btn btn-sm btn-secondary me-md-2" th:if="${session.loginMember != null}" th:onclick="|location.href='@{/logout}'|">로그아웃</a>
+  </div>
+  <div class="flex-nowrap justify-content-between align-items-center">
+    <div class="text-center">
+      <a th:href="@{/}" class="nav-link link-dark"><h1>게시판</h1></a>
+    </div>
+  </div>
+</div>
