@@ -37,4 +37,4 @@ server:
     include-exception: true
 
 
-file-dir: C:/Users/lsh/Documents/spring study/file/
+file-dir: /home/ec2-user/file
