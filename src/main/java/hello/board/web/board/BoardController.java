@@ -64,7 +64,7 @@ public class BoardController {
             return "redirect:/login";
         }
         model.addAttribute("form", new BoardForm());
-        return "/board/newPostForm";
+        return "board/newPostForm";
     }
 
     // 게시글 작성
@@ -106,7 +106,7 @@ public class BoardController {
         model.addAttribute("findPost", findPost);
         model.addAttribute("form", new CommentForm());
         model.addAttribute("comments", comments);
-        return "/board/postViewForm";
+        return "board/postViewForm";
     }
 
     // 게시글 수정 폼
@@ -116,7 +116,7 @@ public class BoardController {
 
         model.addAttribute("findPost", findPost);
         model.addAttribute("form", new BoardForm());
-        return "/board/updatePostForm";
+        return "board/updatePostForm";
     }
 
     // 게시글 수정
