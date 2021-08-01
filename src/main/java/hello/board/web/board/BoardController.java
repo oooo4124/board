@@ -58,11 +58,8 @@ public class BoardController {
 
     // 게시글 작성 폼
     @GetMapping("board/newPost")
-    public String newPost(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "redirect:/login";
-        }
+    public String newPost(Model model) {
+
         model.addAttribute("form", new BoardForm());
         return "board/newPostForm";
     }
@@ -92,9 +89,6 @@ public class BoardController {
                            Model model) {
         Board findPost = boardService.findOne(postId);
 
-        if (loginMember == null) {
-            return "redirect:/login";
-        }
         //      자신의 글이 아닐 경우 조회수 업
         if (findPost.getMember().getLoginId() != loginMember.getLoginId()) {
             boardService.upViews(postId);
