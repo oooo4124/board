@@ -52,6 +52,7 @@ class PostRepositoryTest {
 
         Pageable pageable = PageRequest.of(0, 5);
         Page<PostDto> postDtos = postRepository.boardSearch(boardSearch, pageable);
+        assertThat(postDtos.getContent().get(0).getId()).isEqualTo(post1.getId());
 
         //수정
         String postContent = "post3";
