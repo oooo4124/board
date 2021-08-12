@@ -31,8 +31,8 @@ public class InitController {
 
         @Transactional
         public void init() {
-            Member testMember1 = new Member("test1","1","testMember1");
-            Member testMember2 = new Member("test2","1","testMember2");
+            Member testMember1 = new Member("tm1","1","tm1");
+            Member testMember2 = new Member("tm2","1","tm2");
             em.persist(testMember1);
             em.persist(testMember2);
 
