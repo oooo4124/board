@@ -53,12 +53,10 @@ class PostRepositoryTest {
         Pageable pageable = PageRequest.of(0, 5);
         Page<PostDto> postDtos = postRepository.boardSearch(boardSearch, pageable);
         assertThat(postDtos.getContent().size()).isEqualTo(2);
-        assertThat(postDtos.getTotalPages()).isEqualTo(1);
 
         //수정
         String postContent = "post3";
         post1.update(postContent);
-
         assertThat(post1.getPostContent()).isEqualTo(postContent);
 
         //삭제
