@@ -2,6 +2,7 @@ package hello.board.web.intercepter;
 
 import hello.board.web.SessionConst;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

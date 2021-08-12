@@ -13,7 +13,7 @@
     <div class="container px-4 px-lg-5 mt-5">
     <div class="container-fluid">
         <div class="row">
-            <div class="">
+            <div>
                 <table class="table table-hover text-left col-lg-4">
                     <thead class="table-light">
                     <tr>
@@ -26,28 +26,63 @@
                     </thead>
                     <tbody>
                     <tr th:each="post : ${posts}" >
-                        <th width="auto" th:text="${post.id}">#</th>
-                        <th th:onclick="|location.href='@{/board/{postId}/postView (postId=${post.id})}'|"
+                        <td width="auto" th:text="${post.id}">#</td>
+                        <td th:onclick="|location.href='@{/board/{postId}/postView (postId=${post.id})}'|"
                             width="60% auto" style="cursor: pointer"><a th:text="${post.postTitle}">제목</a>
-                            <span class="fst-normal" th:text="|[${post.getComments().size()}]|"></span> </th>
-                        <th width="auto" th:text="${post.getMember().name}">작성자</th>
-                        <th width="auto" th:text="${post.postDate}">작성일</th>
-                        <th width="auto" th:text="${post.viewCount}">조회수</th>
+                            <span class="fst-normal" th:text="'[' + ${post.commentCount} + ']'"></span> </td>
+                        <td width="auto" th:text="${post.userName}">작성자</td>
+                        <td width="auto" th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm')}">작성일</td>
+                        <td width="auto" th:text="${post.viewCount}">조회수</td>
                     </tr>
                     </tbody>
                 </table>
                 <div class="row">
-<!--                                <div class="col-sm-6">-->
-<!--                                <form>-->
-<!--                                <input type="text" placeholder="검색할 내용을 입력하세요">-->
-<!--                                    <button class="btn btn-sm btn-outline-secondary">검색</button>-->
-<!--                                </form>-->
-<!--                                </div>-->
-                    <div class="col-sm-12 justify-content-end d-flex">
+                        <form class="form-horizontal col-md-11" th:object="${boardSearch}">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input class="form-group form-control" type="text" th:field="*{searchContent}" placeholder="검색"/>
+                                </div>
+                                <div class="col-md-5">
+                                <select th:field="*{searchCondition}" class="form-select me-md-2">
+                                    <option value="all">전체</option>
+                                    <option value="postTitle">제목</option>
+                                    <option value="postContent">내용</option>
+                                    <option value="username">작성자</option>
+                                </select>
+                                </div>
+                                <div class="col-md-1 d-flex">
+                                <button type="submit" class="form-group btn btn-sm btn-outline-secondary">검색</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="col-md-1 justify-content-end d-flex">
                         <button class="btn btn-sm btn-outline-secondary"
                                 th:onclick="|location.href='@{/board/newPost}'|">글작성
                         </button>
-                    </div>
+                        </div>
+                </div>
+                <div class="mt-5">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" th:with="start=${T(Math).floor(posts.number/10)*10},
+                            last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
+                                <li class="page-item"><a class="page-link" th:pattern="${posts}" th:href="@{/board(page=0)}" aria-label="<<"><<</a></li>
+                                <li class="page-item" th:class="${posts.first} ? 'disabled'">
+                                    <a class="page-link" th:href="${posts.first} ? '#' : @{/board(page=${posts.number-1})}" aria-label="<"><</a>
+                                </li>
+                                <li class="page-item"
+                                    th:each="page: ${last>=posts.totalPages} ? ${#numbers.sequence(start, last-1)} : ${#numbers.sequence(start, last)}"
+                                    th:class="${page==posts.number} ? 'page-item active'">
+                                    <a class="page-link" th:href="@{board(page=${page})}" th:text="${page+1}">page</a>
+                                </li>
+                                <li class="page-item" th:class="${posts.last} ? 'disabled'">
+                                    <a class="page-link" th:href="${posts.last} ? '#' : @{/board(page=${posts.number+1})}" aria-label=">">></a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" th:href="@{/board(page=${posts.totalPages-1})}" aria-label=">>">>></a>
+                                </li>
+                            </ul>
+                        </nav>
                 </div>
             </div>
         </div>

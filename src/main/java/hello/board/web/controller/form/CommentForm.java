@@ -1,4 +1,4 @@
-package hello.board.web.board.form;
+package hello.board.web.controller.form;
 
 import lombok.Getter;
 import lombok.Setter;

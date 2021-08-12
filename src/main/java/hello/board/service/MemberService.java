@@ -5,7 +5,6 @@ import hello.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +39,8 @@ public class MemberService {
     }
 
     // memberId로 특정 회원 조회
-    public Member findOneMember(Long memberId) {
-        return memberRepository.findOne(memberId);
+    public Member findOneMember(Long memberId) throws IllegalAccessException {
+        return memberRepository.findById(memberId).orElseThrow(()-> new IllegalAccessException("잘못된 접근입니다."));
     }
 
 

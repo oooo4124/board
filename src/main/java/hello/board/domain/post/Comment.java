@@ -1,4 +1,4 @@
-package hello.board.domain.board;
+package hello.board.domain.post;
 
 import lombok.Getter;
 
@@ -19,15 +19,15 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Board board;
+    private Post post;
 
 
     protected Comment() {
     }
 
-    public Comment(String commentWriter, String commentContent, Board board) {
+    public Comment(String commentWriter, String commentContent, Post post) {
         this.commentWriter = commentWriter;
         this.commentContent = commentContent;
-        this.board = board;
+        this.post = post;
     }
 }

@@ -1,13 +1,14 @@
 package hello.board.service;
 
-import hello.board.domain.board.Board;
-import hello.board.domain.board.Comment;
+import hello.board.domain.post.Post;
+import hello.board.domain.post.Comment;
 import hello.board.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,8 +22,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public List<Comment> findComments(Board board) {
-        return commentRepository.findBypostId(board);
+    public List<Comment> findComments(Long postId) {
+        return commentRepository.findByPostId(postId);
     }
-
 }

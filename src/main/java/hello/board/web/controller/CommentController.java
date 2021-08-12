@@ -1,12 +1,12 @@
-package hello.board.web.board;
+package hello.board.web.controller;
 
 import hello.board.domain.member.Member;
-import hello.board.domain.board.Board;
-import hello.board.domain.board.Comment;
-import hello.board.service.BoardService;
+import hello.board.domain.post.Post;
+import hello.board.domain.post.Comment;
+import hello.board.service.PostService;
 import hello.board.service.CommentService;
 import hello.board.web.SessionConst;
-import hello.board.web.board.form.CommentForm;
+import hello.board.web.controller.form.CommentForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,22 +23,22 @@ import javax.servlet.http.HttpSession;
 public class CommentController {
 
     private final CommentService commentService;
-    private final BoardService boardService;
+    private final PostService postService;
 
     // 댓글 작성
     @PostMapping("board/{postId}/comment")
     public String commentWrite(@PathVariable("postId") Long postId,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                                CommentForm form,
-                               HttpServletRequest request) {
+                               HttpServletRequest request) throws IllegalAccessException{
 
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "redirect:/login";
         }
 
-        Board findBoard = boardService.findOne(postId);
-        Comment comment = new Comment(loginMember.getName(), form.getCommentContent(), findBoard);
+        Post findPost = postService.findPost(postId);
+        Comment comment = new Comment(loginMember.getUsername(), form.getCommentContent(), findPost);
         commentService.saveComment(comment);
         log.info("댓글 ={}",comment);
 

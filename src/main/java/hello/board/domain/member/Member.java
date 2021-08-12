@@ -1,6 +1,6 @@
 package hello.board.domain.member;
 
-import hello.board.domain.board.Board;
+import hello.board.domain.post.Post;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,21 +21,20 @@ public class Member {
     private Long id;
 
     @NotEmpty
-//    @Column(unique = true)
     private String loginId;
 
     @NotEmpty
     private String password;
 
     @NotEmpty
-    private String name;
+    private String username;
 
     @OneToMany(mappedBy = "member")
-    private List<Board> boards = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
-    public Member(String loginId, String password, String name) {
+    public Member(String loginId, String password, String username) {
         this.loginId = loginId;
         this.password = password;
-        this.name = name;
+        this.username = username;
     }
 }

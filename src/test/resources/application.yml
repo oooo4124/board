@@ -1,22 +1,43 @@
 spring:
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 500
+
+  profiles:
+    active: test
+
 #  datasource:
 #    url: jdbc:h2:tcp://localhost/~/board;
 #    username: sa
 #    password:
 #    driver-class-name: org.h2.Driver
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: create
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 logging:
   level:
     org.hibernate.SQL: debug
-    org.hibernate.type: trace
+#    org.hibernate.type: trace
 
-file-dir: C:/Users/lsh/Documents/spring study/file/
+server:
+  error:
+    whitelabel:
+      enabled: false
+    include-exception: true
+
+
+file-dir: /home/ec2-user/file
+#file-dir: C:\Users\lsh\Documents\spring study\file

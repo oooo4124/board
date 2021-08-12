@@ -1,7 +1,5 @@
-package hello.board.web.board.form;
+package hello.board.web.controller.form;
 
-import hello.board.domain.fileUpload.UploadFile;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter @Setter
-public class BoardForm {
+public class PostForm {
 
 
     @NotBlank

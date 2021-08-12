@@ -1,7 +1,8 @@
-package hello.board.web.member;
+package hello.board.web.controller;
 
 import hello.board.domain.member.Member;
 import hello.board.service.MemberService;
+import hello.board.web.controller.form.MemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Slf4j
 @Controller

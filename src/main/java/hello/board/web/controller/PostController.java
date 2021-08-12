@@ -1,19 +1,22 @@
-package hello.board.web.board;
+package hello.board.web.controller;
 
-import hello.board.domain.board.Board;
+import hello.board.domain.post.Post;
 import hello.board.domain.fileUpload.UploadFile;
 import hello.board.domain.member.Member;
-import hello.board.domain.board.Comment;
+import hello.board.domain.post.Comment;
+import hello.board.dto.PostDto;
 import hello.board.file.FileStore;
-import hello.board.service.BoardService;
+import hello.board.service.PostService;
 import hello.board.service.CommentService;
 import hello.board.web.SessionConst;
-import hello.board.web.board.form.BoardForm;
-import hello.board.web.board.form.CommentForm;
+import hello.board.web.controller.form.CommentForm;
+import hello.board.web.controller.form.PostForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,34 +25,31 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class BoardController {
+public class PostController {
 
-    private final BoardService boardService;
+    private final PostService postService;
     private final CommentService commentService;
     private final FileStore fileStore;
 
-    @GetMapping("board")
-    public String board() {
-        return "mainForm";
-    }
+    //게시판 메인 리스트
+    @GetMapping(value = {"","board"})
+    public String boardMain(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+            BoardSearch boardSearch, Model model, Pageable pageable) {
 
-    @GetMapping("")
-    public String boardLogin(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+        Page<PostDto> posts = postService.search(boardSearch, pageable);
 
-        List<Board> posts = boardService.findBoards();
+
+        model.addAttribute("boardSearch", boardSearch);
         model.addAttribute("member", loginMember);
         model.addAttribute("posts", posts);
 
@@ -60,25 +60,25 @@ public class BoardController {
     @GetMapping("board/newPost")
     public String newPost(Model model) {
 
-        model.addAttribute("form", new BoardForm());
+        model.addAttribute("form", new PostForm());
         return "board/newPostForm";
     }
 
     // 게시글 작성
     @PostMapping("board/newPost")
     public String post(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
-                       @ModelAttribute BoardForm form) throws IOException {
+                       @ModelAttribute PostForm form) throws IOException {
 
         List<MultipartFile> multipartFiles = form.getMultipartFiles();
         List<UploadFile> uploadFiles = fileStore.storeFiles(multipartFiles);
 
 
-        Board board =
-                new Board(form.getPostTitle(), form.getPostContent(), loginMember,
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM.dd. hh:mm")), 0, uploadFiles);
+        Post board =
+                new Post(form.getPostTitle(), form.getPostContent(), loginMember, loginMember.getUsername(),
+                        LocalDateTime.now(), 0, uploadFiles);
 
 
-        Long postId = boardService.savePost(board);
+        Long postId = postService.savePost(board);
         return "redirect:/board/" + postId + "/postView";
     }
 
@@ -86,15 +86,15 @@ public class BoardController {
     @GetMapping("board/{postId}/postView")
     public String postView(@PathVariable("postId") Long postId,
                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
-                           Model model) {
-        Board findPost = boardService.findOne(postId);
+                           Model model) throws IllegalAccessException {
+        Post findPost = postService.findPost(postId);
 
         //      자신의 글이 아닐 경우 조회수 업
         if (findPost.getMember().getLoginId() != loginMember.getLoginId()) {
-            boardService.upViews(postId);
+            postService.upViews(postId);
             model.addAttribute("loginMember", loginMember);
         }
-        List<Comment> comments = commentService.findComments(findPost);
+        List<Comment> comments = commentService.findComments(findPost.getId());
         log.info("comments ={}", comments);
 
         model.addAttribute("findPost", findPost);
@@ -105,28 +105,35 @@ public class BoardController {
 
     // 게시글 수정 폼
     @GetMapping("board/{postId}/updatePost")
-    public String updatePost(@PathVariable("postId") Long postId, Model model) {
-        Board findPost = boardService.findOne(postId);
+    public String updatePost(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+                                 @PathVariable("postId") Long postId, Model model) throws IllegalAccessException {
+
+        Post findPost = postService.findPost(postId);
+
+        //작성자와 로그인한 사용자가 다를 경우 메인으로
+        if (loginMember.getLoginId() != findPost.getMember().getLoginId()) {
+            return "redirect:/";
+        }
 
         model.addAttribute("findPost", findPost);
-        model.addAttribute("form", new BoardForm());
+        model.addAttribute("form", new PostForm());
         return "board/updatePostForm";
     }
 
     // 게시글 수정
     @PostMapping("board/{postId}/updatePost")
-    public String updatePostComp(@PathVariable("postId") Long postId, @ModelAttribute BoardForm form) {
+    public String updatePostComp(@PathVariable("postId") Long postId, @ModelAttribute PostForm form) throws IllegalAccessException {
 
-        boardService.updatePost(postId, form.getPostContent());
+        postService.updatePost(postId, form.getPostContent());
 
         return "redirect:/board/{postId}/postView";
     }
 
     // 게시글 삭제
     @GetMapping("board/{postId}/deletePost")
-    public String deletePost(@PathVariable("postId") Long postId) {
+    public String deletePost(@PathVariable("postId") Long postId) throws IllegalAccessException {
 
-        boardService.deletePost(postId);
+        postService.deletePost(postId);
 
         return "redirect:/";
     }
@@ -134,11 +141,11 @@ public class BoardController {
     //  첨부파일 다운로드
     @GetMapping("attach/{postId}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable Long postId,
-                                                    @RequestParam String storeFileName) throws MalformedURLException {
+                                                    @RequestParam String storeFileName) throws MalformedURLException, IllegalAccessException {
 
         String uploadFileName = null;
 
-        Board findPost = boardService.findOne(postId);
+        Post findPost = postService.findPost(postId);
         List<UploadFile> uploadFiles = findPost.getUploadFiles();
         for (UploadFile uploadFile : uploadFiles) {
             if (uploadFile.getStoreFileName().equals(storeFileName)) {

@@ -1,8 +1,9 @@
-package hello.board.web.login;
+package hello.board.web.controller;
 
 import hello.board.domain.member.Member;
 import hello.board.service.LoginService;
 import hello.board.web.SessionConst;
+import hello.board.web.controller.form.LoginForm;
 import hello.board.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
