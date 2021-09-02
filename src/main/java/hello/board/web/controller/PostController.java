@@ -112,10 +112,6 @@ public class PostController {
 
         Post findPost = postService.findPost(postId);
 
-        //작성자와 로그인한 사용자가 다를 경우 메인으로
-        if (loginMember.getLoginId() != findPost.getMember().getLoginId()) {
-            return "redirect:/";
-        }
 
         model.addAttribute("findPost", findPost);
         model.addAttribute("form", new PostForm());

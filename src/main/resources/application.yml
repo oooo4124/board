@@ -8,16 +8,16 @@ spring:
   profiles:
     active: local
 
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/board;
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
   datasource:
-    url: jdbc:mariadb://board-db.cftsb4dcr8mq.ap-northeast-2.rds.amazonaws.com:3306/board?useUnicode=yes&characterEncoding=UTF-8
-    username: admin
-    password: zxc123456
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:h2:tcp://localhost/~/board;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:mariadb://board-db.cftsb4dcr8mq.ap-northeast-2.rds.amazonaws.com:3306/board?useUnicode=yes&characterEncoding=UTF-8
+#    username: admin
+#    password: zxc123456
+#    driver-class-name: org.mariadb.jdbc.Driver
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -47,5 +47,5 @@ server:
     include-exception: true
 
 
-file-dir: /home/ec2-user/file
-#file-dir: C:\Users\lsh\Documents\spring study\file
+#file-dir: /home/ec2-user/file
+file-dir: C:\Users\lsh\Documents\spring study\file
