@@ -66,14 +66,17 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center" th:with="start=${T(Math).floor(posts.number/10)*10},
                             last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
-                                <li class="page-item"><a class="page-link" th:pattern="${posts}" th:href="@{/board(page=0)}" aria-label="<<"><<</a></li>
+                                <li class="page-item"><a class="page-link" th:pattern="${posts}" th:href="@{/board(page=0, searchContent=${boardSearch.searchContent}, searchCondition=${boardSearch.searchCondition})}" aria-label="<<"><<</a></li>
                                 <li class="page-item" th:class="${posts.first} ? 'disabled'">
-                                    <a class="page-link" th:href="${posts.first} ? '#' : @{/board(page=${posts.number-1})}" aria-label="<"><</a>
+                                    <a class="page-link" th:href="${posts.first} ? '#' : @{/board(page=${posts.number-1}, searchContent=${boardSearch.searchContent}, searchCondition=${boardSearch.searchCondition})}" aria-label="<"><</a>
                                 </li>
                                 <li class="page-item"
                                     th:each="page: ${last>=posts.totalPages} ? ${#numbers.sequence(start, last-1)} : ${#numbers.sequence(start, last)}"
                                     th:class="${page==posts.number} ? 'page-item active'">
-                                    <a class="page-link" th:href="@{board(page=${page})}" th:text="${page+1}">page</a>
+                                    <a class="page-link"
+                                       th:href="${boardSearch.searchContent == null} ?
+                                       @{board(page=${page})} : @{board(page=${page}, searchContent=${boardSearch.searchContent}, searchCondition=${boardSearch.searchCondition})}"
+                                       th:text="${page+1}">page</a>
                                 </li>
                                 <li class="page-item" th:class="${posts.last} ? 'disabled'">
                                     <a class="page-link" th:href="${posts.last} ? '#' : @{/board(page=${posts.number+1})}" aria-label=">">></a>

@@ -23,11 +23,11 @@
 <div class="container ContentBox">
     <div>
         <div>
-            <h1 th:text="${findPost.getPostTitle()}">글제목</h1>
-            <h6 th:text="${findPost.getMember().getUsername}">작성자</h6>
+            <h1 th:text="${findPost.postTitle}">글제목</h1>
+            <h6 th:text="${findPost.getMember().username}">작성자</h6>
         </div>
         <div class="row">
-            <span class="col" th:text="${findPost.getPostDate()}">작성일</span>
+            <span class="col" th:text="${#temporals.format(findPost.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
             <span class="col-1">조회수<span th:text="${findPost.getViewCount()}">조회수</span></span>
         </div>
         <hr class="my-3">
@@ -35,7 +35,7 @@
 
         <form th:action="@{/board/{postId}/updatePost (postId=${findPost.id})}" th:object="${form}" method="post">
             <div>
-                <textarea class="form-control bg-white" aria-disabled="true" id="postContent" name="postContent" th:text="${findPost.getPostContent()}">
+                <textarea class="form-control bg-white" aria-disabled="true" id="postContent" name="postContent" th:text="${findPost.postContent}">
                 </textarea>
             </div>
 
