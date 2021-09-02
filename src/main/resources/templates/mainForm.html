@@ -79,10 +79,10 @@
                                        th:text="${page+1}">page</a>
                                 </li>
                                 <li class="page-item" th:class="${posts.last} ? 'disabled'">
-                                    <a class="page-link" th:href="${posts.last} ? '#' : @{/board(page=${posts.number+1}, searchContent=${boardSearch.searchContent}, searchCondition=${boardSearch.searchCondition})}" aria-label=">">></a>
+                                    <a class="page-link" th:href="${posts.last} ? '#' : @{/board(page=${posts.number+1})}" aria-label=">">></a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link" th:href="@{/board(page=${posts.totalPages-1}, searchContent=${boardSearch.searchContent}, searchCondition=${boardSearch.searchCondition})}" aria-label=">>">>></a>
+                                    <a class="page-link" th:href="@{/board(page=${posts.totalPages-1})}" aria-label=">>">>></a>
                                 </li>
                             </ul>
                         </nav>
